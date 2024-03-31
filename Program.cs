@@ -9,15 +9,15 @@ public class Class1
         Console.Write("Введіть к-сть рядків матриці:");
         int row = int.Parse(Console.ReadLine());
         Console.Write("Введіть к-сть стовпців матриці:");
-        int col = int.Parse(Console.ReadLine());
-        Console.Write("A = ");
-        int A = int.Parse(Console.ReadLine());
+        int col = int.Parse(Console.ReadLine());              
         int[,] matrix = new int[row, col];
-        matrix = EnteringMatrix(row, col, matrix);
-        Solution(matrix, A, row, col);
+        matrix = EnteringMatrix(row, col, matrix); 
+        Solution(matrix, row);     
+        PrintMatrix(matrix, row, col);
+        
     }
     static int[,] EnteringMatrix(int row, int col, int[,] matrix)
-    {
+    {    
         Console.WriteLine("Введіть елементи масива порядково через пробіл");
         for (int i = 0; i < row; i++)
         {
@@ -29,20 +29,26 @@ public class Class1
         }
         return matrix;
     }
-    static void Solution(int[,] matrix, int A, int row, int col)
+    static void Solution(int[,] matrix, int row)
     {
-        int counter = 0;
+        
+        for (int i = 0; i < row; i++)
+        {
+            int temp = matrix[i, i];
+            matrix[i, i] = matrix[i, row - 1 - i];
+            matrix[i, row - 1 - i] = temp;
+        }
+    }
+    static void PrintMatrix(int [,] matrix, int row, int col)
+    {      
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i, j] > A)
-                {
-                    counter++;
-                }
+                Console.Write(matrix[i, j] + "\t");
             }
+            Console.WriteLine();
         }
-        Console.WriteLine($"Кількість елементів які перевищують А = {counter}");
     }
-}
+}  
 
