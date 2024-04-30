@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Text;
+using System.Linq;
 
 public class Class4
 {
@@ -9,55 +10,42 @@ public class Class4
         Console.Write("Введіть к-сть рядків матриці:");
         int row = int.Parse(Console.ReadLine());
         Console.Write("Введіть к-сть стовпців матриці:");
-        int col = int.Parse(Console.ReadLine());              
-        int[,] matrix = new int[row, col];
-        matrix = EnteringMatrix(row, col, matrix); 
-        Solution(matrix, row, col);     
-        PrintMatrix(matrix, row, col);  
-    }
-    static int[,] EnteringMatrix(int row, int col, int[,] matrix)
-    {    
+        int col = int.Parse(Console.ReadLine());
+        int[][] matrix = new int[row][];
+        matrix = EnteringMatrix(row, col, matrix);
+        int[][] sortedMatrix = Solution(matrix);
+        PrintMatrix(sortedMatrix);
+    } 
+    static int[][] EnteringMatrix(int row, int col, int[][] matrix)
+    {
         Console.WriteLine("Введіть елементи масива порядково через пробіл");
         for (int i = 0; i < row; i++)
         {
+            matrix[i] = new int[col];           
             string[] s = Console.ReadLine().Split(' ');
             for (int j = 0; j < col; j++)
             {
-                matrix[i, j] = int.Parse(s[j]);
+                matrix[i][j] = int.Parse(s[j]);
             }
         }
         return matrix;
     }
-    static void Solution(int[,] matrix, int row, int col )
-    {                   
-        int column = 2;
-        for (int i = 0; i < row - 1; i++)
-        {
-            for (int j = 0; j < row - i - 1; j++)
-            {
-                if (matrix[j, column] < matrix[j + 1, column])
-                {                   
-                    for (int k = 0; k < col; k++)
-                    {
-                        int temp = matrix[j, k];
-                        matrix[j, k] = matrix[j + 1, k];
-                        matrix[j + 1, k] = temp;
-                    }
-                }
-            }
-        }
+    static int[][] Solution(int[][] matrix)
+    {
+        int[][] sortedMatrix = matrix.OrderBy(row => row[1]).ToArray();
+        Array.Reverse(sortedMatrix);
+        return sortedMatrix;
     }
-    static void PrintMatrix(int [,] matrix, int row, int col)
-    {      
-        for (int i = 0; i < row; i++)
+    static void PrintMatrix( int[][] matrix)
+    {
+        Console.WriteLine(" ");
+        for (int i = 0; i < matrix.Length; i++)
         {
-            for (int j = 0; j < col; j++)
+            for (int j = 0; j < matrix[i].Length; j++)
             {
-                Console.Write(matrix[i, j] + "\t");
+                Console.Write(matrix[i][j] + " ");
             }
             Console.WriteLine();
         }
     }
-}  
-
-
+}
