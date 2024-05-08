@@ -10,12 +10,11 @@ public class Class4
         int row = int.Parse(Console.ReadLine());
         Console.Write("Введіть к-сть стовпців матриці:");
         int col = int.Parse(Console.ReadLine());
-        int[][] matrix = new int[row][];
-        matrix = EnteringMatrix(row, col, matrix);
-        int[][] sortedMatrix = Solution(matrix,1);
-        PrintMatrix(sortedMatrix);
+        int[][] matrix = EnteringMatrix(row);        
+        Solution(matrix,2);
+        PrintMatrix(matrix);
     } 
-    static int[][] EnteringMatrix(int row, int col, int[][] matrix)
+    static int[][] EnteringMatrix(int row)
     {       
         int[][] array_of_arrays = new int[row][];
         for (int i = 0; i < array_of_arrays.Length; i++)
@@ -30,7 +29,7 @@ public class Class4
         }
         return array_of_arrays;
     }
-    static int[][] Solution(int[][] matrix, int columnIndex)
+    static void Solution(int[][] matrix, int columnIndex)
     {
         int rowCount = matrix.Length;
         bool swapped = true; 
@@ -47,8 +46,7 @@ public class Class4
                     swapped = true; 
                 }
             }
-        }
-       return matrix;
+        }       
     }
     static void PrintMatrix( int[][] matrix)
     {
