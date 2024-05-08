@@ -1,82 +1,63 @@
 using System;
 using System.Text;
-class Program
+using System.Linq;
+public class Class4
 {
-    static void Main(string[] args)
+    static void Main() //Упорядкувати рядки матриці за зменшенням елементів 2-ої (технічно 2-ої, яку на побутовому рівні назвали б третьою) колонки.
     {
         Console.OutputEncoding = Encoding.UTF8;
-        Console.Write("Введіть кількість рядків у матриці:");
+        Console.Write("Введіть к-сть рядків матриці:");
         int row = int.Parse(Console.ReadLine());
-        Console.Write("Введіть кількість стовпців у матриці:");
+        Console.Write("Введіть к-сть стовпців матриці:");
         int col = int.Parse(Console.ReadLine());
-        int[,] matrix = new int[row, col];              
-        EnteringMatrix(matrix);                     
-        SortRowsByColumn(matrix, 1); 
-        Console.WriteLine(" ");
-        PrintMatrix(matrix);
-    }
-    static int[,] EnteringMatrix(int[,] matrix)
-    {    
-        int row = matrix.GetLength(0);
-        int col = matrix.GetLength(1);
-        Console.WriteLine("Введіть елементи масива порядково через пробіл");
-        for (int i = 0; i < row; i++)
+        int[][] matrix = new int[row][];
+        matrix = EnteringMatrix(row, col, matrix);
+        int[][] sortedMatrix = Solution(matrix,1);
+        PrintMatrix(sortedMatrix);
+    } 
+    static int[][] EnteringMatrix(int row, int col, int[][] matrix)
+    {       
+        int[][] array_of_arrays = new int[row][];
+        for (int i = 0; i < array_of_arrays.Length; i++)
         {
-            string[] s = Console.ReadLine().Split(' ');
-            for (int j = 0; j < col; j++)
+            Console.WriteLine("Введіть рядок через пробіл");
+            string[] input = Console.ReadLine().Split(' ');
+            array_of_arrays[i] = new int[input.Length];
+            for (int j = 0; j < input.Length; j++)
             {
-                matrix[i, j] = int.Parse(s[j]);
+                array_of_arrays[i][j] = int.Parse(input[j]);
             }
         }
-        return matrix;
+        return array_of_arrays;
     }
-    static void SortRowsByColumn(int[,] matrix, int columnIndex)
+    static int[][] Solution(int[][] matrix, int columnIndex)
     {
-        int rowCount = matrix.GetLength(0);
-        int colCount = matrix.GetLength(1);      
-        int[] rowIndex = new int[rowCount]; //Індекс рядків
-        for (int i = 0; i < rowCount; i++)
+        int rowCount = matrix.Length;
+        bool swapped = true; 
+        while (swapped)
         {
-            rowIndex[i] = i;
-        }    
-          
-        for (int i = 1; i < rowCount; i++) //Cортування вставками
-        {
-            int key = rowIndex[i];
-            int j = i - 1;
-            for (; j >= 0 && matrix[rowIndex[j], columnIndex] < matrix[key, columnIndex]; j--)
+            swapped = false; 
+            for (int i = 0; i < rowCount - 1; i++)
             {
-                rowIndex[j + 1] = rowIndex[j];
+                if (matrix[i][columnIndex] < matrix[i + 1][columnIndex])
+                {                   
+                    int[] temp = matrix[i];
+                    matrix[i] = matrix[i + 1];
+                    matrix[i + 1] = temp;
+                    swapped = true; 
+                }
             }
-            rowIndex[j + 1] = key;
-        }  
-
-        int[,] sortedMatrix = new int[rowCount, colCount];
-        for (int i = 0; i < rowCount; i++)
-        {
-            for (int j = 0; j < colCount; j++)
-            {
-                sortedMatrix[i, j] = matrix[rowIndex[i], j];
-            }
-        } 
-                     
-        for (int i = 0; i < rowCount; i++)
-        {
-            for (int j = 0; j < colCount; j++)
-            {
-                matrix[i, j] = sortedMatrix[i, j];
-            }
-        }        
+        }
+       return matrix;
     }
-    static void PrintMatrix(int[,] matrix)
+    static void PrintMatrix( int[][] matrix)
     {
-        int rowCount = matrix.GetLength(0);
-        int colCount = matrix.GetLength(1);
-        for (int i = 0; i < rowCount; i++)
+        Console.WriteLine(" ");
+        for (int i = 0; i < matrix.Length; i++)
         {
-            for (int j = 0; j < colCount; j++)
+            for (int j = 0; j < matrix[i].Length; j++)
             {
-                Console.Write(matrix[i, j] + " ");
+                Console.Write(matrix[i][j] + " ");
             }
             Console.WriteLine();
         }
